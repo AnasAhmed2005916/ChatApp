@@ -18,4 +18,16 @@ abstract final class AppValidators {
 
     return null;
   }
+
+  static String? name(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter your name';
+    }
+
+    if (value.trim().length < 3) {
+      return 'Name must be at least 3 characters';
+    }
+
+    return null;
+  }
 }

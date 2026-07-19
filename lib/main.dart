@@ -1,5 +1,5 @@
+import 'package:chat_app/core/routes/app_router.dart';
 import 'package:chat_app/core/theme/light_theme.dart';
-import 'package:chat_app/features/auth/presentation/views/login_view.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +16,11 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
+
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: LoginView(),
     );
   }
 }

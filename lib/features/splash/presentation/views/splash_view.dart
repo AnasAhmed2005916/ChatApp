@@ -1,6 +1,7 @@
 import 'package:chat_app/core/constants/app_constants.dart';
 import 'package:chat_app/core/routes/routes.dart';
 import 'package:chat_app/core/utils/assets.dart';
+import 'package:chat_app/core/widgets/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -66,12 +67,12 @@ class _SplashViewState extends State<SplashView>
                     height: 150,
                     fit: BoxFit.contain,
                   ),
-                  const SizedBox(height: 16),
+                  const VerticalSpace(16),
                   Text(
                     AppConstants.appName,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const VerticalSpace(8),
                   Text(
                     'Connecting...',
                     style: Theme.of(context).textTheme.bodyMedium,

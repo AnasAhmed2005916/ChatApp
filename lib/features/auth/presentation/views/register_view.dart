@@ -1,4 +1,5 @@
 import 'package:chat_app/core/helpers/validators.dart';
+import 'package:chat_app/core/routes/app_router.dart';
 import 'package:chat_app/core/routes/routes.dart';
 import 'package:chat_app/core/utils/assets.dart';
 import 'package:chat_app/core/widgets/app_spacing.dart';
@@ -7,18 +8,21 @@ import 'package:chat_app/features/auth/presentation/widgets/custom_auth_text_for
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final nameController = TextEditingController();
   bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
         elevation: 30,
         centerTitle: true,
         title: Text(
-          'Login',
+          'Register',
           style: Theme.of(
             context,
           ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
@@ -44,16 +48,24 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   const VerticalSpace(30),
                   Image.asset(Assets.appLogo, width: 200, height: 200),
-                  const SizedBox(height: 20),
+                  const VerticalSpace(20),
                   Text(
-                    'Welcome Back!',
+                    'Sign up to start chatting with your friends :)',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  Text(
-                    'Sign in to continue chatting',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+
                   const VerticalSpace(20),
+                  CustomAuthTextFormField(
+                    controller: nameController,
+                    hintText: 'Full name',
+                    obscureText: false,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.name,
+                    prefixIcon: const Icon(Icons.person),
+                    validator: AppValidators.name,
+                  ),
+                  const VerticalSpace(15),
+
                   CustomAuthTextFormField(
                     controller: emailController,
                     hintText: 'Email',
@@ -69,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
 
                     hintText: 'Password',
                     obscureText: !isPasswordVisible,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
@@ -86,28 +98,49 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     validator: AppValidators.password,
                   ),
-                  const VerticalSpace(24),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
+                  const VerticalSpace(15),
+                  CustomAuthTextFormField(
+                    controller: confirmPasswordController,
+
+                    hintText: 'Confirm Password',
+                    obscureText: !isConfirmPasswordVisible,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.visiblePassword,
+                    prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(
                       onPressed: () {
-                        context.push(AppRoutes.forgotPassword);
+                        setState(() {
+                          isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                        });
                       },
-                      child: const Text('Forgot Password?'),
+                      icon: Icon(
+                        isConfirmPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
                   ),
-                  const VerticalSpace(20),
+                  const VerticalSpace(24),
                   InkWell(
                     onTap: () {
-                      context.go(AppRoutes.register);
+                      context.go(AppRoutes.login);
                     },
                     child: RichText(
                       text: TextSpan(
-                        text: "Don't have an account? ",
+                        text: 'Already have an account? ',
                         style: Theme.of(context).textTheme.bodyMedium,
                         children: [
                           TextSpan(
-                            text: "Register",
+                            text: 'Login',
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
@@ -118,8 +151,14 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
+
                   const VerticalSpace(48),
-                  CustomAuthButton(text: 'Login', onPressed: () {}),
+                  CustomAuthButton(
+                    text: 'Register',
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {}
+                    },
+                  ),
                 ],
               ),
             ),
@@ -131,8 +170,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 }

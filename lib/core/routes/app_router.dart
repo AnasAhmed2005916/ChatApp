@@ -1,10 +1,13 @@
 import 'package:chat_app/core/routes/routes.dart';
+import 'package:chat_app/features/auth/presentation/views/forgot_password_view.dart';
+import 'package:chat_app/features/auth/presentation/views/login_view.dart';
+import 'package:chat_app/features/auth/presentation/views/register_view.dart';
 import 'package:chat_app/features/home/presentation/views/home_view.dart';
 import 'package:chat_app/features/splash/presentation/views/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutes.register,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -13,7 +16,20 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: AppRoutes.home,
+
       builder: (context, state) => const HomeView(),
+    ),
+    GoRoute(
+      path: AppRoutes.login,
+      builder: (context, state) => const LoginView(),
+    ),
+    GoRoute(
+      path: AppRoutes.register,
+      builder: (context, state) => const RegisterView(),
+    ),
+    GoRoute(
+      path: AppRoutes.forgotPassword,
+      builder: (context, state) => const ForgotPasswordView(),
     ),
   ],
 );
