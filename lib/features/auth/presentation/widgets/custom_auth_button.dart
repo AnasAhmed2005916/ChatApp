@@ -7,7 +7,7 @@ class CustomAuthButton extends StatelessWidget {
     required this.onPressed,
   });
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

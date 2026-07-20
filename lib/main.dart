@@ -1,4 +1,5 @@
 import 'package:chat_app/core/routes/app_router.dart';
+import 'package:chat_app/core/services/service_locator.dart';
 import 'package:chat_app/core/theme/light_theme.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:device_preview/device_preview.dart';
@@ -9,11 +10,9 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  setupGetIt();
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => ChatApp(), // Wrap your app
-    ),
+    DevicePreview(enabled: !kReleaseMode, builder: (context) => ChatApp()),
   );
 }
 
