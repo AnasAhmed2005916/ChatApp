@@ -24,7 +24,10 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.login,
-      builder: (context, state) => const LoginView(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<AuthCubit>(),
+        child: const LoginView(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.register,
