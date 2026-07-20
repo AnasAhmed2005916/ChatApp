@@ -1,6 +1,7 @@
 import 'package:chat_app/core/routes/routes.dart';
 import 'package:chat_app/core/services/service_locator.dart';
 import 'package:chat_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:chat_app/features/auth/presentation/views/email_verification_view.dart';
 import 'package:chat_app/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:chat_app/features/auth/presentation/views/login_view.dart';
 import 'package:chat_app/features/auth/presentation/views/register_view.dart';
@@ -14,7 +15,10 @@ final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.splash,
-      builder: (context, state) => const SplashView(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => getIt<AuthCubit>(),
+        child: const SplashView(),
+      ),
     ),
 
     GoRoute(
@@ -41,6 +45,13 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => BlocProvider(
         create: (context) => getIt<AuthCubit>(),
         child: const ForgotPasswordView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.emailVerification,
+      builder: (context, state) => BlocProvider(
+        create: (context) => getIt<AuthCubit>(),
+        child: const EmailVerificationView(),
       ),
     ),
   ],

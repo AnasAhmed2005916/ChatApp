@@ -10,3 +10,9 @@ final class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);
 }
+
+final class AuthLoggedOut extends AuthState {}
+
+final class AuthAuthenticated extends AuthState {}
+
+final class EmailNotVerified extends AuthState {}

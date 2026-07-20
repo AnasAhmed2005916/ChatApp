@@ -2,7 +2,6 @@ import 'package:chat_app/core/helpers/validators.dart';
 import 'package:chat_app/core/routes/routes.dart';
 import 'package:chat_app/core/utils/assets.dart';
 import 'package:chat_app/core/widgets/app_spacing.dart';
-import 'package:chat_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:chat_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:chat_app/features/auth/presentation/cubit/auth_state.dart';
 import 'package:chat_app/features/auth/presentation/widgets/custom_auth_button.dart';
@@ -31,7 +30,7 @@ class _RegisterViewState extends State<RegisterView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          context.go(AppRoutes.home);
+          context.go(AppRoutes.emailVerification);
         }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(

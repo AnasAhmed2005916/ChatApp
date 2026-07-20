@@ -40,6 +40,25 @@ class AuthRepoImpl implements AuthRepo {
   Future<void> logout() async {
     await auth.signOut();
   }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    final user = auth.currentUser;
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+    }
+  }
+
+  @override
+  Future<bool> isEmailVerified() async {
+    await auth.currentUser?.reload();
+    return auth.currentUser?.emailVerified ?? false;
+  }
+
+  @override
+  User? getCurrentUser() {
+    return auth.currentUser;
+  }
 }
 
 String _handleFirebaseAuthException(FirebaseAuthException e) {
