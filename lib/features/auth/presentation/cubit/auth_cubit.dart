@@ -27,4 +27,14 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure(e.toString()));
     }
   }
+
+  Future<void> forgotPassword({required String email}) async {
+    emit(AuthLoading());
+    try {
+      await authRepo.forgotPassword(email: email);
+      emit(AuthSuccess());
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
+    }
+  }
 }

@@ -38,7 +38,10 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.forgotPassword,
-      builder: (context, state) => const ForgotPasswordView(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => getIt<AuthCubit>(),
+        child: const ForgotPasswordView(),
+      ),
     ),
   ],
 );
