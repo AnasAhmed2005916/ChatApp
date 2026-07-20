@@ -1,5 +1,4 @@
 import 'package:chat_app/core/helpers/validators.dart';
-import 'package:chat_app/core/routes/app_router.dart';
 import 'package:chat_app/core/routes/routes.dart';
 import 'package:chat_app/core/utils/assets.dart';
 import 'package:chat_app/core/widgets/app_spacing.dart';
