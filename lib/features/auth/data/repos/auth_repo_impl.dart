@@ -1,8 +1,11 @@
+import 'package:chat_app/features/auth/data/models/user_model.dart';
 import 'package:chat_app/features/auth/data/repos/auth_repo.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   Future<void> login({required String email, required String password}) async {
     try {
@@ -14,14 +17,27 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<void> register({
+    required String name,
     required String email,
     required String password,
   }) async {
     try {
-      await auth.createUserWithEmailAndPassword(
+      final credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      final user = UserModel(
+        name: name,
+        uid: credential.user!.uid,
+        email: email,
+        imageUrl: '',
+        about: 'Hey there! I am using Chat App.',
+        isOnline: true,
+        lastSeen: DateTime.now(),
+        createdAt: DateTime.now(),
+      );
+
+      await saveUser(user);
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleFirebaseAuthException(e));
     }
@@ -58,6 +74,11 @@ class AuthRepoImpl implements AuthRepo {
   @override
   User? getCurrentUser() {
     return auth.currentUser;
+  }
+
+  @override
+  Future<void> saveUser(UserModel user) async {
+    await firestore.collection('users').doc(user.uid).set(user.toJson());
   }
 }
 

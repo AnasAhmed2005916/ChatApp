@@ -5,6 +5,7 @@ import 'package:chat_app/features/auth/presentation/views/email_verification_vie
 import 'package:chat_app/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:chat_app/features/auth/presentation/views/login_view.dart';
 import 'package:chat_app/features/auth/presentation/views/register_view.dart';
+import 'package:chat_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:chat_app/features/home/presentation/views/home_view.dart';
 import 'package:chat_app/features/splash/presentation/views/splash_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.home,
 
-      builder: (context, state) => const HomeView(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => getIt<HomeCubit>()..loadCurrentUser(),
+        child: const HomeView(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.login,

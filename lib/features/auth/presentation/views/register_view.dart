@@ -177,6 +177,7 @@ class _RegisterViewState extends State<RegisterView> {
                             : () {
                                 if (_formKey.currentState!.validate()) {
                                   context.read<AuthCubit>().register(
+                                    name: nameController.text,
                                     email: emailController.text.trim(),
                                     password: passwordController.text,
                                   );
