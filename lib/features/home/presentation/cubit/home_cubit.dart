@@ -6,7 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepo homeRepo;
   HomeCubit(this.homeRepo) : super(HomeInitial());
-  Future<void> loadCurrentUser() async {
+
+  Future<void> loadAllUsers() async {
+    emit(HomeLoading());
+    try {
+      final List<UserModel> users = await homeRepo.getAllUsers();
+      emit(HomeUsersLoaded(users));
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+  }
+}
+
+/*
+ Future<void> loadCurrentUser() async {
     emit(HomeLoading());
     try {
       final UserModel user = await homeRepo.getCurrentUser();
@@ -15,4 +28,5 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeError(e.toString()));
     }
   }
-}
+  
+ */

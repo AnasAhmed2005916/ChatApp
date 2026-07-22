@@ -7,15 +7,28 @@ class HomeRepoImpl implements HomeRepo {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<UserModel> getCurrentUser() async {
+  // Future<UserModel> getCurrentUser() async {
+  //   final currentUser = auth.currentUser;
+  //   if (currentUser == null) {
+  //     throw Exception('No user is logged in.');
+  //   }
+  //   final doc = await firestore.collection('users').doc(currentUser.uid).get();
+  //   if (!doc.exists) {
+  //     throw Exception('User data no found');
+  //   }
+  //   return UserModel.fromJson(doc.data()!);
+  // }
+  @override
+  Future<List<UserModel>> getAllUsers() async {
+    final snapshot = await firestore.collection('users').get();
+    final users = snapshot.docs
+        .map((doc) => UserModel.fromJson(doc.data()))
+        .toList();
     final currentUser = auth.currentUser;
     if (currentUser == null) {
-      throw Exception('No user is logged in.');
+      throw Exception('No authenticated user.');
     }
-    final doc = await firestore.collection('users').doc(currentUser.uid).get();
-    if (!doc.exists) {
-      throw Exception('User data no found');
-    }
-    return UserModel.fromJson(doc.data()!);
+    users.removeWhere((user) => user.uid == currentUser.uid);
+    return users;
   }
 }

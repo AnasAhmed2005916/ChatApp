@@ -1,10 +1,22 @@
 import 'package:chat_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:chat_app/features/home/presentation/cubit/home_state.dart';
+import 'package:chat_app/features/home/presentation/widgets/chat_user_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().loadAllUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,61 +39,16 @@ class HomeView extends StatelessWidget {
           );
         }
 
-        if (state is HomeLoaded) {
-          final user = state.user;
+        if (state is HomeUsersLoaded) {
+          final users = state.users;
 
           return Scaffold(
             appBar: AppBar(centerTitle: true, title: const Text('Chat App')),
-            body: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    child: Icon(Icons.person, size: 50),
-                  ),
-                  const SizedBox(height: 20),
-
-                  Text(
-                    user.name,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  Text(
-                    user.email,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: const Icon(Icons.info_outline),
-                            title: const Text("About"),
-                            subtitle: Text(user.about),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            leading: Icon(
-                              user.isOnline
-                                  ? Icons.circle
-                                  : Icons.circle_outlined,
-                              color: user.isOnline ? Colors.green : Colors.grey,
-                            ),
-                            title: Text(user.isOnline ? "Online" : "Offline"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            body: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return ChatUserItem(user: users[index]);
+              },
             ),
           );
         }
