@@ -25,17 +25,11 @@ class ChatCubit extends Cubit<ChatState> {
     emit(ChatLoading());
     _messagesSubscription?.cancel();
 
-    _messagesSubscription = chatRepo
-        .getMessages(receiverId: receiverId)
-        .listen(
-          (messages) {
-            emit(ChatLoaded(messages));
-          },
-          onError: (e) {
-            print(e);
-            emit(ChatError(e.toString()));
-          },
-        );
+    _messagesSubscription = chatRepo.getMessages(receiverId: receiverId).listen(
+      (messages) {
+        emit(ChatLoaded(messages));
+      },
+    );
   }
 
   @override

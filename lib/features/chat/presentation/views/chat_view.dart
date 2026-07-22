@@ -40,9 +40,13 @@ class _ChatViewState extends State<ChatView> {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    reverse: true,
+
                     itemCount: state.messages.length,
                     itemBuilder: (context, index) {
-                      return MessageBubble(message: state.messages[index]);
+                      final message =
+                          state.messages[state.messages.length - 1 - index];
+                      return MessageBubble(message: message);
                     },
                   ),
                 ),
