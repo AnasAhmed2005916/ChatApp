@@ -1,4 +1,4 @@
-import 'package:chat_app/features/auth/data/models/user_model.dart';
+import 'package:chat_app/features/home/data/models/chat_user_model.dart';
 import 'package:chat_app/features/home/data/repos/home_repo.dart';
 import 'package:chat_app/features/home/presentation/cubit/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,8 +10,13 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadAllUsers() async {
     emit(HomeLoading());
     try {
-      final List<UserModel> users = await homeRepo.getAllUsers();
-      emit(HomeUsersLoaded(users));
+      final users = await homeRepo.getAllUsers();
+      final chatUsers = <ChatUserModel>[];
+      for (final user in users) {
+        final chatUser = await homeRepo.getChatUserInfo(user);
+        chatUsers.add(chatUser);
+      }
+      emit(HomeUsersLoaded(chatUsers));
     } catch (e) {
       emit(HomeError(e.toString()));
     }

@@ -40,14 +40,14 @@ class _HomeViewState extends State<HomeView> {
         }
 
         if (state is HomeUsersLoaded) {
-          final users = state.users;
+          final chatUsers = state.chatUsers;
 
           return Scaffold(
             appBar: AppBar(centerTitle: true, title: const Text('Chat App')),
             body: ListView.builder(
-              itemCount: users.length,
+              itemCount: chatUsers.length,
               itemBuilder: (context, index) {
-                return ChatUserItem(user: users[index]);
+                return ChatUserItem(chatUser: chatUsers[index]);
               },
             ),
           );
